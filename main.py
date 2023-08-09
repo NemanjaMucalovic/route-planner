@@ -13,6 +13,7 @@ app.add_middleware(
 )
 
 class Direction(BaseModel):
+    location: str
     place_type: str
 
 @app.get("/health")
@@ -22,6 +23,6 @@ def health_check():
 
 @app.post("/direction")
 def post_data(direction: Direction):
-    return get_places(location='Novi Sad', place_type=direction.place_type)
+    return get_places(location=direction.location, place_type=direction.place_type)
 
 

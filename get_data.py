@@ -4,7 +4,6 @@ import os
 
 api_key = os.environ.get('MAPS_API_KEY')
 gmaps = googlemaps.Client(key=api_key)
-location = 'Novi Sad'
 
 def convert_location_to_geocode(location):
     result = gmaps.geocode(location)
