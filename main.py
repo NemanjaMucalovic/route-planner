@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from get_data import get_places, get_directions
+from get_data import get_places, get_directions, get_locations
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -24,5 +24,9 @@ def health_check():
 @app.post("/direction")
 def post_data(direction: Direction):
     return get_directions(location=direction.location, place_type=direction.place_type)
+
+@app.post("/locations")
+def post_locations(direction: Direction):
+    return get_locations(location=direction.location, place_type=direction.place_type)
 
 

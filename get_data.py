@@ -28,15 +28,26 @@ def get_places(location, place_type):
         places.append(place_info)
     return places
 
+def get_locations(location, place_type):
+    list_of_places = get_places(location, place_type)
+    return [
+        place
+        for place in list_of_places
+        if place['business_status'] == 'OPERATIONAL'
+        and place['rating'] is not None
+        and place['user_ratings_total'] > 10
+    ]
+
 def get_directions(location, place_type):
         list_of_places = get_places(location, place_type)
         filtered_places = []
         for place in list_of_places:
             if place['business_status'] == 'OPERATIONAL' and place['rating'] is not None and place['user_ratings_total'] > 10:
                 filtered_places.append(place)
-                print(filtered_places)
+                #print(filtered_places)
                 visits = [(place["lat"], place["lng"]) for place in filtered_places]
                 waypoints = "|".join([f"{lat},{lng}" for lat, lng in visits])
+        print(filtered_places)
         directions_result = gmaps.directions(
                     origin=location,
                     destination=location,
