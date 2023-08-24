@@ -1,7 +1,9 @@
-from fastapi import FastAPI,Body
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
-from get_data import get_places, get_directions
+import os
+import datetime
+from get_data import get_directions
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -26,11 +28,19 @@ async def health_check():
 
 @app.post("/direction")
 async def post_data(direction: Direction):
-    return get_directions(location=direction.location, place_type=direction.place_type, date=direction.date)
+    current_date = datetime.date.today()
+    received_date = datetime.datetime.strptime(direction.date, "%Y-%m-%d").date()
+    if received_date < current_date:
+        raise HTTPException(status_code=400, detail="wrong date received")
+    else:
+        return get_directions(location=direction.location, place_type=direction.place_type, date=direction.date)
 
 @app.get("/downloads/{csv_id}", response_class=FileResponse)
 async def get_csv(csv_id: str):
-    return f'{csv_id}.csv'
+    if not os.path.isfile(f'{csv_id}.csv'):
+        raise HTTPException(status_code=404, detail="file not found")
+    else:
+        return f'{csv_id}.csv'
 
 
 
