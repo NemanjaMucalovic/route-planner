@@ -3,6 +3,7 @@ import os
 from datetime import datetime
 import csv
 import uuid
+from database import insert_data
 
 api_key = os.environ.get('MAPS_API_KEY')
 gmaps = googlemaps.Client(key=api_key)
@@ -127,7 +128,10 @@ def get_directions(location, place_type, date):
             place for place in places_temp if get_working_hours(place.get('place_id'), date)
         ]
         print(f"Number of places to display: {len(filtered_places)}")
-
+        locations_data_set = {"date":datetime.now(),
+                              "start_location": location,
+                              "locations": filtered_places}
+        locations_set_id = insert_data(locations_data_set, collection="locations")
         name_of_csv = {"csv_id": write_data_to_csv(filtered_places)}
 
         visits = [(place["lat"], place["lng"]) for place in filtered_places]
@@ -141,7 +145,7 @@ def get_directions(location, place_type, date):
             optimize_waypoints=True,
         )
         if directions_result:
-            return [filtered_places, directions_result[0], name_of_csv]
+            return [directions_result[0], name_of_csv, {"locations_set_id":locations_set_id}]
         else:
             return {"message": "We could not generate directions"}
 
