@@ -4,13 +4,12 @@ from bson.objectid import ObjectId
 mongodb_uri = "mongodb://localhost:27017"
 client = MongoClient(mongodb_uri)
 db = client['map_dev']
-directions_collection = db['directions']
 locations_collection = db['locations']
 
 def insert_data(data_set, collection):
      collection = db[collection]
-     new_locations = collection.insert_one(data_set).inserted_id
-     return str(new_locations)
+     new_data = collection.insert_one(data_set).inserted_id
+     return str(new_data)
 
 def get_data(data_id, collection):
      collection = db[collection]

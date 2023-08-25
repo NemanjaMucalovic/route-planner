@@ -145,7 +145,7 @@ def get_directions(location, place_type, date):
             optimize_waypoints=True,
         )
         if directions_result:
-            return [directions_result[0], name_of_csv, {"locations_set_id":locations_set_id}]
+            return [filtered_places, directions_result[0], name_of_csv, {"locations_set_id":locations_set_id}]
         else:
             return {"message": "We could not generate directions"}
 
