@@ -1,6 +1,10 @@
 from datetime import datetime
 from get_data import get_places, get_directions
-from filters import sort_places_by_ratings, sort_places_by_working_hours
+from filters import (
+    sort_places_by_ratings,
+    sort_places_by_working_hours,
+    create_waypoints,
+)
 from helpers import transform_places
 
 
@@ -12,6 +16,7 @@ def generate_locations(location, place_type):
         print("An error occurred:", e)
         return []
 
+
 def generate_directions(location, place_type, date):
     try:
         list_of_places = generate_locations(location, place_type)
@@ -22,10 +27,9 @@ def generate_directions(location, place_type, date):
         locations_data_set = {
             "date": datetime.now(),
             "start_location": location,
-            "locations": filtered_places
+            "locations": filtered_places,
         }
-        visits = [(place["lat"], place["lng"]) for place in filtered_places]
-        waypoints = "|".join([f"{lat},{lng}" for lat, lng in visits])
+        waypoints = create_waypoints(filtered_places)
         directions_result = get_directions(location, waypoints)
         if directions_result:
             return [filtered_places, directions_result, locations_data_set]
