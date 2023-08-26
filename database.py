@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 from bson.objectid import ObjectId
+from helpers import locations_helper
 
 mongodb_uri = "mongodb://localhost:27017"
 client = MongoClient(mongodb_uri)
@@ -17,23 +18,4 @@ def get_data(data_id, collection):
      if collection == locations_collection:
          return locations_helper(locations_data_set)
 
-
-def locations_helper(locations_data) -> dict:
-    extracted_locations = []
-    for location in locations_data["locations"]:
-        location = {
-            "name": location["name"],
-            "lat": location["lat"],
-            "lng": location["lng"],
-            "rating": location["rating"],
-            "place_type": location["place_type"],
-            "user_ratings_total": location["user_ratings_total"]
-        }
-        extracted_locations.append(location)
-    return {
-        "id": str(locations_data["_id"]),
-        "date": locations_data["date"],
-        "start_location": locations_data["start_location"],
-        "locations": extracted_locations
-    }
 
