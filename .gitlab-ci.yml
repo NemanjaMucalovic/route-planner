@@ -1,0 +1,21 @@
+stages:
+  - lint
+  - build_latest
+
+linting:
+  stage: lint
+  image: python:3.8
+  script:
+    - pip install pylint
+    - pylint app
+
+build:
+  stage: build_latest
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE:latest .
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker tag $CI_REGISTRY_IMAGE:latest
+    - docker push $CI_REGISTRY_IMAGE:latest
