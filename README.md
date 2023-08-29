@@ -6,4 +6,4 @@ Installation
 
 3.run python get_data.py
 
-[![pylint](https://<MAIN_GROUP>.gitlab.io/<SUB_GROUP>/<PROJECT>/badges/pylint.svg)](https://<MAIN_GROUP>.gitlab.io/<SUB_GROUP>/<PROJECT>/lint/)
+[![pylint](https://gitlab.io/home_setup/maps_dev/badges/pylint.svg)](https://gitlab.io/home_setup/maps_dev/lint/)
