@@ -26,13 +26,17 @@ class ResponseDirection(BaseModel):
 class PlacesID(BaseModel):
     id: str
 
+
 class PlacesSet(BaseModel):
     id: str = Field(default_factory=uuid.uuid4, alias="_id")
     start_location: str
     date: datetime
     locations: List
 
+
 class DirectionSet(BaseModel):
     id: str = Field(default_factory=uuid.uuid4, alias="_id")
     overview_polyline: str
-    location_reference: str = Field(default_factory=uuid.uuid4, alias="_location_reference")
+    location_reference: str = Field(
+        default_factory=uuid.uuid4, alias="_location_reference"
+    )

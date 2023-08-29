@@ -1,15 +1,17 @@
 from app.db.database import db
 from bson.objectid import ObjectId
 
+
 def insert_data(data_set, collection):
     try:
-       collection = db[collection]
-       print(data_set)
-       new_data = collection.insert_one(data_set).inserted_id
-       return str(new_data)
+        collection = db[collection]
+        print(data_set)
+        new_data = collection.insert_one(data_set).inserted_id
+        return str(new_data)
     except Exception as e:
         print(f"error has occurred:{e}")
         return None
+
 
 def get_data(data_id, collection):
     try:
@@ -20,12 +22,13 @@ def get_data(data_id, collection):
         print(f"error has occurred:{e}")
         return None
 
+
 def get_specific_field_by_foreign_key(foreign_key, field_name, collection):
     try:
         collection = db[collection]
         pipeline = [
             {"$match": {"location_reference": ObjectId(foreign_key)}},
-            {"$project": {field_name: 1, "_id": 0}}
+            {"$project": {field_name: 1, "_id": 0}},
         ]
 
         result = list(collection.aggregate(pipeline))
@@ -34,4 +37,3 @@ def get_specific_field_by_foreign_key(foreign_key, field_name, collection):
     except Exception as e:
         print("An error occurred:", e)
         return []
-

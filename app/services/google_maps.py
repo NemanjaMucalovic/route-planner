@@ -1,8 +1,10 @@
-from googlemaps import Client
 import os
 import datetime
+from googlemaps import Client
 
 api_key = os.environ.get("GOOGLE_MAPS_API_KEY")
+
+
 class GoogleMapsAPI:
     def __init__(self, api_key):
         self.client = Client(api_key)
@@ -25,7 +27,7 @@ class GoogleMapsAPI:
         except Exception as e:
             return {"error": "An unexpected error occurred", "message": str(e)}
 
-    def convert_location_to_geocode(self,location):
+    def convert_location_to_geocode(self, location):
         try:
             result = self.client.geocode(location)
             if result:
@@ -115,7 +117,9 @@ class GoogleMapsAPI:
 
     def generate_filtered_places(self, location, place_type, date):
         try:
-            list_of_places = self.generate_raw_places(location=location, place_type=place_type)
+            list_of_places = self.generate_raw_places(
+                location=location, place_type=place_type
+            )
             sorted_places = self.filter_places_by_rating(list_of_places)
             print(f"Number of places that are filtered: {len(sorted_places)}")
             filtered_places = self.sort_places_by_working_hours(sorted_places, date)
@@ -123,7 +127,7 @@ class GoogleMapsAPI:
             if filtered_places:
                 return filtered_places
             else:
-                return {"message": "We could not generate directions"}
+                return []
         except Exception as e:
             return {"error": "An error occurred", "message": str(e)}
 
@@ -132,8 +136,8 @@ class GoogleMapsAPI:
         places = [
             place
             for place in places
-            if place.get('rating') is not None
-            and place.get('user_ratings_total', 0) > 10
+            if place.get("rating") is not None
+            and place.get("user_ratings_total", 0) > 10
         ]
 
         return places

@@ -6,6 +6,7 @@ pdf_generator = PDFGenerator()
 
 router = APIRouter()
 
-@router.get('/pdf/{set_id}', response_class=FileResponse)
+
+@router.get("/pdf/{set_id}", response_class=FileResponse)
 async def generate_pdf(set_id: str, image: str = "pins"):
-    return pdf_generator.generate_pdf(set_id,image_type=image)
+    return pdf_generator.generate_pdf(set_id, image_type=image)
