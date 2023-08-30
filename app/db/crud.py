@@ -34,6 +34,6 @@ def get_specific_field_by_foreign_key(foreign_key, field_name, collection):
         result = list(collection.aggregate(pipeline))
         return result
 
-    except Exception as e:
-        print("An error occurred:", e)
+    except Exception as error:
+        print("An error occurred:", error)
         return []

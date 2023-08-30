@@ -7,8 +7,6 @@ from PIL import Image, ImageDraw, ImageFont
 from app.db.crud import get_data, get_specific_field_by_foreign_key
 
 
-
-
 class PDFGenerator:
     def generate_pdf(self, set_id, image_type):
         pdf_file = f"generated_route_{set_id}.pdf"
@@ -119,7 +117,8 @@ class PDFGenerator:
                 return image_path
             response = requests.get(
                 f"https://maps.googleapis.com/maps/api/staticmap?size=640x480&path=enc:{polygon}&key={os.environ.get('GOOGLE_MAPS_API_KEY')}",
-                timeout=10)
+                timeout=10,
+            )
         elif image_type == "pins":
             data = get_data(set_id, "places")
             markers = []
@@ -129,8 +128,9 @@ class PDFGenerator:
                 markers.append(f"markers=color:red|{lat},{lng}")
             markers_query = "&".join(markers)
             response = requests.get(
-                f"https://maps.googleapis.com/maps/api/staticmap?size=640x480&{markers_query}&key={os.environ.get('GOOGLE_MAPS_API_KEY')}"
-            , timeout=10)
+                f"https://maps.googleapis.com/maps/api/staticmap?size=640x480&{markers_query}&key={os.environ.get('GOOGLE_MAPS_API_KEY')}",
+                timeout=10,
+            )
         else:
             # TODO: create function that will handle this
             image = Image.new("RGB", (640, 480), color=(255, 255, 255))

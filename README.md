@@ -6,4 +6,6 @@ Installation
 
 3.run python get_data.py
 
-[![pylint](https://gitlab.io/home_setup/maps_dev/badges/pylint.svg)](https://gitlab.io/home_setup/maps_dev/lint/)
+
+
+[![pipeline status](https://gitlab.com/%{project_path}/badges/%{default_branch}/pipeline.svg)](https://gitlab.com/%{project_path}/badges/%{default_branch}/pipeline.svg)
