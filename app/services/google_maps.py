@@ -115,13 +115,15 @@ class GoogleMapsAPI:
             print("An error occurred:", e)
             return []
 
-    def generate_filtered_places(self, location, place_type, date):
+    def generate_filtered_places(self, location, place_type, date, disable_workhours=False):
         try:
             list_of_places = self.generate_raw_places(
                 location=location, place_type=place_type
             )
             sorted_places = self.filter_places_by_rating(list_of_places)
             print(f"Number of places that are filtered: {len(sorted_places)}")
+            if disable_workhours:
+                return sorted_places
             filtered_places = self.sort_places_by_working_hours(sorted_places, date)
             print(f"Number of places to display: {len(filtered_places)}")
             if filtered_places:
