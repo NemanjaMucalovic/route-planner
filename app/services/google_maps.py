@@ -1,6 +1,7 @@
 import os
 import datetime
 from googlemaps import Client
+from app.utils.logger import logger
 
 api_key = os.environ.get("GOOGLE_MAPS_API_KEY")
 
@@ -91,13 +92,13 @@ class GoogleMapsAPI:
             day_of_week = date_to_check.weekday()
             if opening_hours_data:
                 opening_hours_for_day = opening_hours_data[day_of_week]
-                print(opening_hours_for_day + place_details["result"]["name"])
+                logger.info(opening_hours_for_day + place_details["result"]["name"])
                 return "Closed" not in opening_hours_for_day
             else:
-                print("Opening hours data not available.")
+                logger.info("Opening hours data not available.")
                 return False
         except Exception as e:
-            print("An unexpected error occurred:", e)
+            logger.error("An unexpected error occurred:", e)
             return False
 
     def sort_places_by_working_hours(self, list_of_places, date):
@@ -115,17 +116,19 @@ class GoogleMapsAPI:
             print("An error occurred:", e)
             return []
 
-    def generate_filtered_places(self, location, place_type, date, disable_workhours=False):
+    def generate_filtered_places(
+        self, location, place_type, date, disable_workhours=False
+    ):
         try:
             list_of_places = self.generate_raw_places(
                 location=location, place_type=place_type
             )
             sorted_places = self.filter_places_by_rating(list_of_places)
-            print(f"Number of places that are filtered: {len(sorted_places)}")
+            logger.info(f"Number of places that are filtered: {len(sorted_places)}")
             if disable_workhours:
                 return sorted_places
             filtered_places = self.sort_places_by_working_hours(sorted_places, date)
-            print(f"Number of places to display: {len(filtered_places)}")
+            logger.info(f"Number of places to display: {len(filtered_places)}")
             if filtered_places:
                 return filtered_places
             else:
@@ -171,9 +174,9 @@ class GoogleMapsAPI:
                 }
                 places.append(place_info)
         except KeyError as key_error:
-            print(f"KeyError occurred: {key_error}")
+            logger.error(f"KeyError occurred: {key_error}")
         except Exception as e:
-            print(f"An error occurred: {e}")
+            logger.error(f"An error occurred: {e}")
 
-        print(f"Number of all places: {len(places)}")
+        logger.info(f"Number of all places: {len(places)}")
         return places

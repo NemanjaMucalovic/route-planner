@@ -19,7 +19,10 @@ async def post_places(places: PlacesInput):
     if verify_date(places.date) is not True:
         raise HTTPException(status_code=400, detail="wrong format/date received")
     data = google_maps_api.generate_filtered_places(
-        location=places.location, place_type=places.place_type, date=places.date, disable_workhours=True
+        location=places.location,
+        place_type=places.place_type,
+        date=places.date,
+        disable_workhours=True,
     )
     if len(data) == 0:
         return JSONResponse(

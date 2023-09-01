@@ -5,12 +5,12 @@ from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 from PIL import Image, ImageDraw, ImageFont
 from app.db.crud import get_data, get_specific_field_by_foreign_key
+from app.utils.logger import logger
 
 
 class PDFGenerator:
     def generate_pdf(self, set_id, image_type):
-        pdf_file = f"generated_route_{set_id}.pdf"
-
+        pdf_file = os.path.join("storage", f"generated_route_{set_id}.pdf")
         places = self.get_details_for_generation(set_id)
         image_path = self.generate_route_image(set_id, image_type)
 
@@ -92,7 +92,7 @@ class PDFGenerator:
             y_position -= background_height  # No additional spacing needed here
 
         c.save()
-
+        logger.info(f"generated pdf file {pdf_file}")
         return pdf_file
 
     @staticmethod
@@ -142,6 +142,7 @@ class PDFGenerator:
             return image_path
         with open(image_path, "wb") as img_file:
             img_file.write(response.content)
+        logger.info(f"generated image {image_path}")
         return image_path
 
     @staticmethod

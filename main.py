@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.v1 import api_router
 from app.utils.utils import create_directory
 from dotenv import load_dotenv
-
+from app.utils.logger import logger
 
 load_dotenv()
 
@@ -15,6 +15,7 @@ app = FastAPI()
 async def startup_event():
     directory_path = "storage"  # Specify the directory path you want to create
     create_directory(directory_path)
+    logger.info(f"created directory: {directory_path}")
 
 
 app.add_middleware(
