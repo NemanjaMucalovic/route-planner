@@ -23,6 +23,28 @@ def get_data(data_id, collection):
         return None
 
 
+def get_all_data(query, collection):
+    try:
+        collection = db[collection]
+        data = collection.find(query)
+        return data
+    except Exception as e:
+        print(f"error has occurred:{e}")
+        return None
+
+
+def get_count(query, collection):
+    try:
+        collection = db[collection]
+        data = collection.count_documents(query)
+        print(data)
+        print(type(data))
+        return data
+    except Exception as e:
+        print(f"error has occurred:{e}")
+        return None
+
+
 def get_specific_field_by_foreign_key(foreign_key, field_name, collection):
     try:
         collection = db[collection]

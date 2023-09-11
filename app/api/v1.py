@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.api.endpoints import directions, places, pdf
+from app.api.endpoints import directions, places, pdf, stats
 
 api_router = APIRouter()
 
@@ -7,3 +7,4 @@ api_router = APIRouter()
 api_router.include_router(directions.router, tags=["directions"])
 api_router.include_router(places.router, tags=["places"])
 api_router.include_router(pdf.router, tags=["pdf"])
+api_router.include_router(stats.router, tags=["stats"])

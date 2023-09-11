@@ -40,3 +40,8 @@ class DirectionSet(BaseModel):
     location_reference: str = Field(
         default_factory=uuid.uuid4, alias="_location_reference"
     )
+
+
+class APICallStats(BaseModel):
+    timestamp: datetime
+    function: str

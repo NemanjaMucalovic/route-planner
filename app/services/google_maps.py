@@ -1,6 +1,7 @@
 import os
 import datetime
 from googlemaps import Client
+from app.db.crud import insert_data
 from app.utils.logger import logger
 
 api_key = os.environ.get("GOOGLE_MAPS_API_KEY")
@@ -20,6 +21,10 @@ class GoogleMapsAPI:
             if "results" not in places_raw:
                 print("No results found.")
                 return []
+            insert_data(
+                {"timestamp": datetime.datetime.now(), "function": "places_nearby"},
+                collection="statistics",
+            )
             return places_raw["results"]
 
         except self.client.exceptions.ApiError as api_error:
@@ -33,6 +38,10 @@ class GoogleMapsAPI:
             result = self.client.geocode(location)
             if result:
                 geometry = result[0].get("geometry", {})
+                insert_data(
+                    {"timestamp": datetime.datetime.now(), "function": "geocode"},
+                    collection="statistics",
+                )
                 return geometry.get("location", {})
             else:
                 print("Geocode not found for:", location)
@@ -52,6 +61,10 @@ class GoogleMapsAPI:
             if "result" not in place_details:
                 print("Place details not found.")
                 return False
+            insert_data(
+                {"timestamp": datetime.datetime.now(), "function": "place_details"},
+                collection="statistics",
+            )
             return place_details
 
         except self.client.exceptions.ApiError as api_error:
@@ -71,6 +84,10 @@ class GoogleMapsAPI:
                 optimize_waypoints=True,
             )
             if directions_result:
+                insert_data(
+                    {"timestamp": datetime.datetime.now(), "function": "place_details"},
+                    collection="statistics",
+                )
                 return directions_result[0]
             else:
                 return {"message": "We could not generate directions"}
