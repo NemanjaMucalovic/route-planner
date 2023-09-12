@@ -85,7 +85,7 @@ class GoogleMapsAPI:
             )
             if directions_result:
                 insert_data(
-                    {"timestamp": datetime.datetime.now(), "function": "place_details"},
+                    {"timestamp": datetime.datetime.now(), "function": "directions"},
                     collection="statistics",
                 )
                 return directions_result[0]
